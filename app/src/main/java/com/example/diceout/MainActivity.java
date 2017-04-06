@@ -97,80 +97,87 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void rollDice(View v) {
-        // Roll dice
-        die1 = rand.nextInt(6)+1;
-        die2 = rand.nextInt(6)+1;
-        die3 = rand.nextInt(6)+1;
 
-        //decrement the turns count
-        turns--;
-
-        String file = "dylan";
-
-        ImageView picture = (ImageView) findViewById(R.id.pic);
-        switch (turns){
-            case 9:
-                file = "braeden.jpg";
-                break;
-            case 8:
-                file = "nicky.png";
-                break;
-            case 7:
-                file = "dylan.png";
-                break;
-            case 6:
-                file = "gnuts.jpg";
-                break;
-            case 5:
-                file = "creepy.jpg";
-                break;
-            default:
-
+        if(turns == 0){
+            return;
         }
-        try {
-            InputStream stream1 = getAssets().open(file);
-            Drawable d1 = Drawable.createFromStream(stream1, null);
-            picture.setImageDrawable(d1);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        // Set dice values into an ArrayList
-        dice.clear();
-        dice.add(die1);
-        dice.add(die2);
-        dice.add(die3);
+        else {
+            // Roll dice
+            die1 = rand.nextInt(6) + 1;
+            die2 = rand.nextInt(6) + 1;
+            die3 = rand.nextInt(6) + 1;
 
-        for (int dieOfSet = 0; dieOfSet < 3; dieOfSet++) {
-            String imageName = "die_" + dice.get(dieOfSet) + ".png";
+            //decrement the turns count
+            turns--;
 
+            String file;
+            //For cycling through pictures
+            ImageView picture = (ImageView) findViewById(R.id.pic);
+            switch (turns) {
+                case 9:
+                    file = "braeden.jpg";
+                    break;
+                case 8:
+                    file = "nicky.png";
+                    break;
+                case 7:
+                    file = "dylan.png";
+                    break;
+                case 6:
+                    file = "gnuts.jpg";
+                    break;
+                case 5:
+                    file = "creepy.jpg";
+                    break;
+                default:
+                    file = "dylan.png";
+
+            }
             try {
-                InputStream stream = getAssets().open(imageName);
-                Drawable d = Drawable.createFromStream(stream,null);
-                diceImageViews.get(dieOfSet).setImageDrawable(d);
+                InputStream stream1 = getAssets().open(file);
+                Drawable d1 = Drawable.createFromStream(stream1, null);
+                picture.setImageDrawable(d1);
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            // Set dice values into an ArrayList
+            dice.clear();
+            dice.add(die1);
+            dice.add(die2);
+            dice.add(die3);
+
+            for (int dieOfSet = 0; dieOfSet < 3; dieOfSet++) {
+                String imageName = "die_" + dice.get(dieOfSet) + ".png";
+
+                try {
+                    InputStream stream = getAssets().open(imageName);
+                    Drawable d = Drawable.createFromStream(stream, null);
+                    diceImageViews.get(dieOfSet).setImageDrawable(d);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            // Build message with the result
+            String msg;
+
+            if (die1 == die2 && die1 == die3) {
+                //triples
+                int scoreDelta = die1 * 100;
+                msg = "You rolled a triple " + die1 + "! You score " + scoreDelta + " points!";
+                score += scoreDelta;
+            } else if (die1 == die2 || die1 == die3 || die2 == die3) {
+                msg = "You rolled doubles for 50 points!";
+                score += 50;
+            } else {
+                msg = "You didn't score this roll. Try again!";
+            }
+
+            // Update the app to display the result message and number of turns left
+            rollResult.setText(msg);
+            scoreText.setText("Score: " + score);
+            turnsText.setText("You have: " + turns + " turns left!");
         }
-
-        // Build message with the result
-        String msg;
-
-        if (die1 == die2 && die1 == die3){
-            //triples
-            int scoreDelta = die1 * 100;
-            msg = "You rolled a triple " + die1 + "! You score " + scoreDelta + " points!";
-            score += scoreDelta;
-        } else if (die1 == die2 || die1 == die3 || die2 == die3){
-            msg = "You rolled doubles for 50 points!";
-            score += 50;
-        } else{
-            msg = "You didn't score this roll. Try again!";
-        }
-
-        // Update the app to display the result message and number of turns left
-        rollResult.setText(msg);
-        scoreText.setText("Score: " + score);
-        turnsText.setText("You have: " + turns + " turns left!");
     }
 
     @Override
