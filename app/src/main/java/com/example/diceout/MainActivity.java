@@ -95,11 +95,14 @@ public class MainActivity extends AppCompatActivity {
         diceImageViews.add(die3image);
 
     }
+    public void viewScore(View view){
+        //Show total score
+    }
 
     public void rollDice(View v) {
 
         if(turns == 0){
-            return;
+
         }
         else {
             // Roll dice
@@ -175,7 +178,12 @@ public class MainActivity extends AppCompatActivity {
 
             // Update the app to display the result message and number of turns left
             rollResult.setText(msg);
-            scoreText.setText("Score: " + score);
+            if(turns == 0){
+                scoreText.setText("Final Score : " + score);
+            }
+            else {
+                scoreText.setText("Score: " + score);
+            }
             turnsText.setText("You have: " + turns + " turns left!");
         }
     }
