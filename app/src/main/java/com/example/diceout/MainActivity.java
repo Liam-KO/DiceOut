@@ -1,5 +1,6 @@
 package com.example.diceout;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -59,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         //fab = floating action button
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
-                @Override
+            @Override
             public void onClick(View view) {
                 rollDice(view);
             }
@@ -70,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         turns = 10;
 
         // Create greeting
-        Toast.makeText(getApplicationContext(),"Welcome to DiceOut!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Welcome to DiceOut!", Toast.LENGTH_SHORT).show();
 
         // Link instances to widgets in the activity view
         rollResult = (TextView) findViewById(R.id.rollResult);
@@ -94,9 +95,6 @@ public class MainActivity extends AppCompatActivity {
         diceImageViews.add(die2image);
         diceImageViews.add(die3image);
 
-    }
-    public void viewScore(View view){
-        //Show total score
     }
 
     public void rollDice(View v) {
@@ -204,6 +202,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Intent intent = new Intent(this,SettingsActivity.class);
+            startActivity(intent);
             return true;
         }
 
