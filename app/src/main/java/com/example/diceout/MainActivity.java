@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class MainActivity extends AppCompatActivity {
-
+    // Field to send final score to FinalScoreActivity
+    public static final String EXTRA_FINAL_SCORE = "com.example.diceout.FINAL_SCORE";
     // Field to hold the roll result text
     TextView rollResult;
 
@@ -65,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 rollDice(view);
             }
         });
+
 
         // Set initial score and turns
         score = 0;
@@ -111,36 +113,8 @@ public class MainActivity extends AppCompatActivity {
             //decrement the turns count
             turns--;
 
-            String file;
-            //For cycling through pictures
-            ImageView picture = (ImageView) findViewById(R.id.pic);
-            switch (turns) {
-                case 9:
-                    file = "braeden.jpg";
-                    break;
-                case 8:
-                    file = "nicky.png";
-                    break;
-                case 7:
-                    file = "dylan.png";
-                    break;
-                case 6:
-                    file = "gnuts.jpg";
-                    break;
-                case 5:
-                    file = "creepy.jpg";
-                    break;
-                default:
-                    file = "dylan.png";
+            }
 
-            }
-            try {
-                InputStream stream1 = getAssets().open(file);
-                Drawable d1 = Drawable.createFromStream(stream1, null);
-                picture.setImageDrawable(d1);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             // Set dice values into an ArrayList
             dice.clear();
             dice.add(die1);
@@ -177,14 +151,19 @@ public class MainActivity extends AppCompatActivity {
             // Update the app to display the result message and number of turns left
             rollResult.setText(msg);
             if(turns == 0){
-                scoreText.setText("Final Score : " + score);
+                //scoreText.setText("Final Score : " + score);
+                Intent intent = new Intent(this,FinalScoreActivity.class);
+                intent.putExtra(EXTRA_FINAL_SCORE,scoreText.getText());
+
+                startActivity(intent);
+
             }
             else {
                 scoreText.setText("Score: " + score);
             }
             turnsText.setText("You have: " + turns + " turns left!");
         }
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
