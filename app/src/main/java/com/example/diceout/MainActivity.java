@@ -3,6 +3,7 @@ package com.example.diceout;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -19,6 +20,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Random;
+
+
 
 public class MainActivity extends AppCompatActivity {
     // Field to send final score to FinalScoreActivity
@@ -39,9 +42,9 @@ public class MainActivity extends AppCompatActivity {
     Random rand;
 
     // Fields to hold the die values
-    int die1;
-    int die2;
-    int die3;
+    int die1,die2,die3,die4,die5;
+
+
 
     //field to hold the score text
     TextView scoreText;
@@ -51,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
     // ArrayList to hold all three die values
     ArrayList<Integer> dice;
+
+    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,12 +95,16 @@ public class MainActivity extends AppCompatActivity {
         ImageView die1image = (ImageView) findViewById(R.id.die1Image);
         ImageView die2image = (ImageView) findViewById(R.id.die2Image);
         ImageView die3image = (ImageView) findViewById(R.id.die3Image);
-
+        ImageView die4image = (ImageView) findViewById(R.id.die4Image);
+        ImageView die5image = (ImageView) findViewById(R.id.die5Image);
         // Build ArrayList with dice ImageView instances
         diceImageViews = new ArrayList<ImageView>();
         diceImageViews.add(die1image);
         diceImageViews.add(die2image);
         diceImageViews.add(die3image);
+        diceImageViews.add(die4image);
+        diceImageViews.add(die5image);
+
 
     }
 
@@ -105,10 +114,12 @@ public class MainActivity extends AppCompatActivity {
 
         }
         else {
-            // Roll dice
+            // Roll dice between [1,6]
             die1 = rand.nextInt(6) + 1;
             die2 = rand.nextInt(6) + 1;
             die3 = rand.nextInt(6) + 1;
+            die4 = rand.nextInt(6) + 1;
+            die5 = rand.nextInt(6) + 1;
 
             //decrement the turns count
             turns--;
@@ -120,6 +131,9 @@ public class MainActivity extends AppCompatActivity {
             dice.add(die1);
             dice.add(die2);
             dice.add(die3);
+            dice.add(die4);
+            dice.add(die5);
+
 
             for (int dieOfSet = 0; dieOfSet < 3; dieOfSet++) {
                 String imageName = "die_" + dice.get(dieOfSet) + ".png";
@@ -152,10 +166,14 @@ public class MainActivity extends AppCompatActivity {
             rollResult.setText(msg);
             if(turns == 0){
                 //scoreText.setText("Final Score : " + score);
-                Intent intent = new Intent(this,FinalScoreActivity.class);
-                intent.putExtra(EXTRA_FINAL_SCORE,scoreText.getText());
+                final Handler handler = new Handler();
 
-                startActivity(intent);
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        showFinalScore();
+                    }
+                }, 2000);
+
 
             }
             else {
@@ -187,5 +205,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void showFinalScore(){
+        Intent intent = new Intent(this,FinalScoreActivity.class);
+        intent.putExtra(EXTRA_FINAL_SCORE,scoreText.getText());
+
+        startActivity(intent);
+
     }
 }

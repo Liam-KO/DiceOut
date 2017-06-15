@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/holo_orange_dark"
+    android:background="@android:color/holo_green_dark"
     android:paddingBottom="16dp"
-    android:paddingTop="16dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
+    android:paddingTop="16dp"
     tools:context="com.example.diceout.FinalScoreActivity"
-    tools:layout_editor_absoluteY="81dp"
-    tools:layout_editor_absoluteX="0dp">
+    tools:layout_editor_absoluteX="0dp"
+    tools:layout_editor_absoluteY="81dp">
 
 
     <TextView
@@ -29,16 +29,15 @@
         android:id="@+id/restartButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="146dp"
-        android:background="@android:color/holo_blue_dark"
-        android:text="Play Again!"
-        android:textColor="@android:color/background_light"
-        android:paddingRight="50dp"
-        android:paddingLeft="50dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="146dp"
+        android:background="@android:color/holo_blue_dark"
         android:onClick="playAgain"
-        />
+        android:paddingBottom="10dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:paddingTop="10dp"
+        android:text="Play Again!"
+        android:textColor="@android:color/background_light" />
 </RelativeLayout>
