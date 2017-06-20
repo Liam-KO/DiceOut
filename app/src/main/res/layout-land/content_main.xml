@@ -51,9 +51,9 @@
         android:id="@+id/die4Image"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginLeft="40dp"
+        android:layout_marginLeft="65dp"
         android:layout_below="@id/die1Image"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:layout_alignParentLeft="true"
         android:src="@drawable/die_1" />
 
@@ -61,9 +61,9 @@
         android:id="@+id/die5Image"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:layout_marginRight="40dp"
+        android:layout_marginRight="65dp"
         android:layout_below="@id/die3Image"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="15dp"
         android:layout_alignParentRight="true"
 
         android:src="@drawable/die_1" />
@@ -74,7 +74,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="46dp"
+        android:layout_marginBottom="20dp"
         android:text="Score: 0"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@android:color/background_light" />
@@ -85,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/scoreText"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="40dp"
+        android:layout_marginBottom="15dp"
         android:text="10 turns left!"
         android:textColor="@android:color/background_light" />
 

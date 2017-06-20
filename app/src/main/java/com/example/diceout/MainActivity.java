@@ -5,13 +5,11 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +24,12 @@ import java.util.Random;
 public class MainActivity extends AppCompatActivity {
     // Field to send final score to FinalScoreActivity
     public static final String EXTRA_FINAL_SCORE = "com.example.diceout.FINAL_SCORE";
+    //Keys for savedInstanceState
+    static final String STATE_SCORE = "playerScore";
+    static final String STATE_ROLLS = "playerTurns";
+    static final String STATE_MSG = "playerMessage";
+    static final String STATE_LIST = "playerDice";
+
     // Field to hold the roll result text
     TextView rollResult;
 
@@ -44,7 +48,8 @@ public class MainActivity extends AppCompatActivity {
     // Fields to hold the die values
     int die1,die2,die3,die4,die5;
 
-
+    // Build message with the result
+    String msg;
 
     //field to hold the score text
     TextView scoreText;
@@ -55,11 +60,11 @@ public class MainActivity extends AppCompatActivity {
     // ArrayList to hold all three die values
     ArrayList<Integer> dice;
 
-    private Handler mHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -78,7 +83,9 @@ public class MainActivity extends AppCompatActivity {
         turns = 10;
 
         // Create greeting
-        Toast.makeText(getApplicationContext(), "Welcome to DiceOut!", Toast.LENGTH_SHORT).show();
+
+         if (savedInstanceState == null)
+            Toast.makeText(getApplicationContext(), "Welcome to DiceOut!", Toast.LENGTH_SHORT).show();
 
         // Link instances to widgets in the activity view
         rollResult = (TextView) findViewById(R.id.rollResult);
@@ -134,21 +141,8 @@ public class MainActivity extends AppCompatActivity {
             dice.add(die4);
             dice.add(die5);
 
-
-            for (int dieOfSet = 0; dieOfSet < 3; dieOfSet++) {
-                String imageName = "die_" + dice.get(dieOfSet) + ".png";
-
-                try {
-                    InputStream stream = getAssets().open(imageName);
-                    Drawable d = Drawable.createFromStream(stream, null);
-                    diceImageViews.get(dieOfSet).setImageDrawable(d);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            // Build message with the result
-            String msg;
+            //set image drawables
+            showDice();
 
             if (die1 == die2 && die1 == die3) {
                 //triples
@@ -172,7 +166,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         showFinalScore();
                     }
-                }, 2000);
+                }, 500);
 
 
             }
@@ -182,6 +176,33 @@ public class MainActivity extends AppCompatActivity {
             turnsText.setText("You have: " + turns + " turns left!");
         }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState){
+        savedInstanceState.putInt(STATE_SCORE, score);
+        savedInstanceState.putInt(STATE_ROLLS, turns);
+        savedInstanceState.putString(STATE_MSG, msg);
+        savedInstanceState.putIntegerArrayList(STATE_LIST, dice);
+
+        //Always call superclass so it can save the view hierarchy state
+        super.onSaveInstanceState(savedInstanceState);
+
+    }
+    public void onRestoreInstanceState(Bundle savedInstanceState){
+        super.onRestoreInstanceState(savedInstanceState);
+
+        //restore state members from saved instance
+        score = savedInstanceState.getInt(STATE_SCORE);
+        turns = savedInstanceState.getInt(STATE_ROLLS);
+        msg = savedInstanceState.getString(STATE_MSG);
+        dice = savedInstanceState.getIntegerArrayList(STATE_LIST);
+
+        rollResult.setText(msg);
+        scoreText.setText("Score: " + score);
+        turnsText.setText("You have: " + turns + " turns left!");
+
+        showDice();
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -207,11 +228,26 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     private void showFinalScore(){
         Intent intent = new Intent(this,FinalScoreActivity.class);
         intent.putExtra(EXTRA_FINAL_SCORE,scoreText.getText());
 
         startActivity(intent);
 
+    }
+
+    private void showDice() {
+        for (int dieOfSet = 0; dieOfSet < 3; dieOfSet++) {
+            String imageName = "die_" + dice.get(dieOfSet) + ".png";
+
+            try {
+                InputStream stream = getAssets().open(imageName);
+                Drawable d = Drawable.createFromStream(stream, null);
+                diceImageViews.get(dieOfSet).setImageDrawable(d);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
